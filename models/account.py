@@ -77,48 +77,49 @@ class AccountInvoice(models.Model):
                 total = 0
                 Detalles = etree.SubElement(DocElectronico, "Detalles")
                 for linea in factura.invoice_line_ids:
-                    precio_unitario = linea.price_unit * (100-linea.discount) / 100
-                    precio_unitario_base = linea.price_subtotal / linea.quantity
+                    if linea.price_unit != 0:
+                        precio_unitario = linea.price_unit * (100-linea.discount) / 100
+                        precio_unitario_base = linea.price_subtotal / linea.quantity
 
-                    total_linea = precio_unitario * linea.quantity
-                    total_linea_base = precio_unitario_base * linea.quantity
+                        total_linea = precio_unitario * linea.quantity
+                        total_linea_base = precio_unitario_base * linea.quantity
 
-                    total_impuestos = total_linea - total_linea_base
-                    tasa = "12" if total_impuestos > 0 else "0"
+                        total_impuestos = total_linea - total_linea_base
+                        tasa = "12" if total_impuestos > 0 else "0"
 
-                    Productos = etree.SubElement(Detalles, "Productos")
+                        Productos = etree.SubElement(Detalles, "Productos")
 
-                    Producto = etree.SubElement(Productos, "Producto")
-                    Producto.text = linea.product_id.default_code or "-"
-                    Descripcion = etree.SubElement(Productos, "Descripcion")
-                    Descripcion.text = linea.name
-                    Medida = etree.SubElement(Productos, "Medida")
-                    Medida.text = "1"
-                    Cantidad = etree.SubElement(Productos, "Cantidad")
-                    Cantidad.text = str(linea.quantity)
-                    Precio = etree.SubElement(Productos, "Precio")
-                    Precio.text = "%.2f" % precio_unitario
-                    PorcDesc = etree.SubElement(Productos, "PorcDesc")
-                    PorcDesc.text = "0"
-                    ImpBruto = etree.SubElement(Productos, "ImpBruto")
-                    ImpBruto.text = "%.2f" % total_linea
-                    ImpDescuento = etree.SubElement(Productos, "ImpDescuento")
-                    ImpDescuento.text = "0"
-                    ImpExento = etree.SubElement(Productos, "ImpExento")
-                    ImpExento.text = "0"
-                    ImpOtros = etree.SubElement(Productos, "ImpOtros")
-                    ImpOtros.text = "0"
-                    ImpNeto = etree.SubElement(Productos, "ImpNeto")
-                    ImpNeto.text = "%.2f" % total_linea_base
-                    ImpIsr = etree.SubElement(Productos, "ImpIsr")
-                    ImpIsr.text = "0"
-                    ImpIva = etree.SubElement(Productos, "ImpIva")
-                    ImpIva.text = "%.2f" % (total_linea - total_linea_base)
-                    ImpTotal = etree.SubElement(Productos, "ImpTotal")
-                    ImpTotal.text = "%.2f" % total_linea
+                        Producto = etree.SubElement(Productos, "Producto")
+                        Producto.text = linea.product_id.default_code or "-"
+                        Descripcion = etree.SubElement(Productos, "Descripcion")
+                        Descripcion.text = linea.name
+                        Medida = etree.SubElement(Productos, "Medida")
+                        Medida.text = "1"
+                        Cantidad = etree.SubElement(Productos, "Cantidad")
+                        Cantidad.text = str(linea.quantity)
+                        Precio = etree.SubElement(Productos, "Precio")
+                        Precio.text = "%.2f" % precio_unitario
+                        PorcDesc = etree.SubElement(Productos, "PorcDesc")
+                        PorcDesc.text = "0"
+                        ImpBruto = etree.SubElement(Productos, "ImpBruto")
+                        ImpBruto.text = "%.2f" % total_linea
+                        ImpDescuento = etree.SubElement(Productos, "ImpDescuento")
+                        ImpDescuento.text = "0"
+                        ImpExento = etree.SubElement(Productos, "ImpExento")
+                        ImpExento.text = "0"
+                        ImpOtros = etree.SubElement(Productos, "ImpOtros")
+                        ImpOtros.text = "0"
+                        ImpNeto = etree.SubElement(Productos, "ImpNeto")
+                        ImpNeto.text = "%.2f" % total_linea_base
+                        ImpIsr = etree.SubElement(Productos, "ImpIsr")
+                        ImpIsr.text = "0"
+                        ImpIva = etree.SubElement(Productos, "ImpIva")
+                        ImpIva.text = "%.2f" % (total_linea - total_linea_base)
+                        ImpTotal = etree.SubElement(Productos, "ImpTotal")
+                        ImpTotal.text = "%.2f" % total_linea
 
-                    total += total_linea
-                    subtotal += total_linea_base
+                        total += total_linea
+                        subtotal += total_linea_base
 
                 xmls = etree.tostring(DocElectronico, xml_declaration=True, encoding="UTF-8", pretty_print=True)
                 logging.warn(xmls)
@@ -157,3 +158,4 @@ class AccountJournal(models.Model):
     rango_inicial_gface = fields.Integer('Rango Inicial GFACE', copy=False)
     rango_final_gface = fields.Integer('Rango Final GFACE', copy=False)
     dispositivo_gface = fields.Char('Dispositivo GFACE', copy=False)
+    tipo_documento_gface = fields.Selection([('Factura', 'Factura'), ('Nota de crédito', 'Nota de crédito'), ('Nota de débito', 'Nota de débito')], 'Tipo de Documento GFACE', copy=False)
