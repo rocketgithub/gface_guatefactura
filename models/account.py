@@ -121,6 +121,13 @@ class AccountInvoice(models.Model):
                         total += total_linea
                         subtotal += total_linea_base
 
+                if factura.journal_id.tipo_documento_gface > 1:
+                    DocAsociados = etree.SubElement(Detalles, "DocAsociados")
+                    DASerie = etree.SubElement(DocAsociados, "DASerie")
+                    DASerie.text = factura.numero_viejo.split("-")[0]
+                    DAPreimpreso = etree.SubElement(DocAsociados, "DAPreimpreso")
+                    DAPreimpreso.text = factura.numero_viejo.split("-")[1]
+
                 xmls = etree.tostring(DocElectronico, xml_declaration=True, encoding="UTF-8", pretty_print=True)
                 logging.warn(xmls)
 
@@ -131,7 +138,6 @@ class AccountInvoice(models.Model):
                 client = zeep.Client(wsdl=wsdl, transport=transport)
 
                 resultado = client.service.generaDocumento(factura.journal_id.usuario_gface, factura.journal_id.clave_gface, factura.journal_id.nit_gface, factura.journal_id.establecimiento_gface, factura.journal_id.tipo_documento_gface, factura.journal_id.id_maquina_gface, "R", xmls)
-                logging.warn(resultado)
                 resultadoXML = etree.XML(resultado)
 
                 if len(resultadoXML.xpath("//Firma")) > 0:
