@@ -124,9 +124,9 @@ class AccountInvoice(models.Model):
                 if factura.journal_id.tipo_documento_gface > 1:
                     DocAsociados = etree.SubElement(Detalles, "DocAsociados")
                     DASerie = etree.SubElement(DocAsociados, "DASerie")
-                    DASerie.text = factura.numero_viejo.split("-")[0]
+                    DASerie.text = factura.numero_viejo.split("|")[0]
                     DAPreimpreso = etree.SubElement(DocAsociados, "DAPreimpreso")
-                    DAPreimpreso.text = factura.numero_viejo.split("-")[1]
+                    DAPreimpreso.text = factura.numero_viejo.split("|")[1]
 
                 xmls = etree.tostring(DocElectronico, xml_declaration=True, encoding="UTF-8", pretty_print=True)
                 logging.warn(xmls)
