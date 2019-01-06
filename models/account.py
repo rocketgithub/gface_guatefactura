@@ -158,4 +158,4 @@ class AccountJournal(models.Model):
     rango_inicial_gface = fields.Integer('Rango Inicial GFACE', copy=False)
     rango_final_gface = fields.Integer('Rango Final GFACE', copy=False)
     dispositivo_gface = fields.Char('Dispositivo GFACE', copy=False)
-    tipo_documento_gface = fields.Selection([('Factura', 'Factura'), ('Nota de crédito', 'Nota de crédito'), ('Nota de débito', 'Nota de débito')], 'Tipo de Documento GFACE', copy=False)
+    nombre_documento_gface = fields.Selection([('Factura', 'Factura'), ('Nota de crédito', 'Nota de crédito'), ('Nota de débito', 'Nota de débito')], 'Tipo de Documento GFACE', copy=False)

@@ -37,6 +37,7 @@
                         <field name="rango_inicial_gface"/>
                         <field name="rango_final_gface"/>
                         <field name="dispositivo_gface"/>
+                        <field name="nombre_documento_gface"/>
                     </field>
                 </data>
             </field>
