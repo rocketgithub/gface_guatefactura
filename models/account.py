@@ -160,7 +160,7 @@ class AccountInvoice(models.Model):
                 session.verify = False
                 session.auth = HTTPBasicAuth('usr_guatefac', 'usrguatefac')
                 session.http_auth = HTTPBasicAuth('usr_guatefac', 'usrguatefac')
-                session.headers.update({'Authorization': 'usr_guatefac usrguatefac'})
+                session.headers.update({'Authorization': 'Basic dXNyX2d1YXRlZmFjOnVzcmd1YXRlZmFj'})
                 transport = Transport(session=session)
                 wsdl = 'https://usr_guatefac:usrguatefac@pdte.guatefacturas.com/webservices63/produccion/svc01/Guatefac?WSDL'
                 client = zeep.Client(wsdl=wsdl, transport=transport)
