@@ -11,6 +11,7 @@ from lxml import etree
 import base64
 import logging
 from requests import Session
+from requests.auth import HTTPBasicAuth
 import zeep
 from zeep.transports import Transport
 
@@ -133,8 +134,9 @@ class AccountInvoice(models.Model):
 
                 session = Session()
                 session.verify = False
+                session.auth = HTTPBasicAuth('usr_guatefac', 'usrguatefac')
                 transport = Transport(session=session)
-                wsdl = 'https://dte.guatefacturas.com:444/webservices63/svc01M/Guatefac?WSDL'
+                wsdl = 'https://pdte.guatefacturas.com/webservices63/produccion/svc01/Guatefac?WSDL'
                 client = zeep.Client(wsdl=wsdl, transport=transport)
 
                 resultado = client.service.generaDocumento(factura.journal_id.usuario_gface, factura.journal_id.clave_gface, factura.journal_id.nit_gface, factura.journal_id.establecimiento_gface, factura.journal_id.tipo_documento_gface, factura.journal_id.id_maquina_gface, "R", xmls)
