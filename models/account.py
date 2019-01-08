@@ -157,8 +157,9 @@ class AccountInvoice(models.Model):
                 logging.warn(xmls)
 
                 session = Session()
-                # session.verify = False
+                session.verify = False
                 session.auth = HTTPBasicAuth('usr_guatefac', 'usrguatefac')
+                session.http_auth = HTTPBasicAuth('usr_guatefac', 'usrguatefac')
                 session.headers.update({'Authorization': 'usr_guatefac usrguatefac'})
                 transport = Transport(session=session)
                 wsdl = 'https://pdte.guatefacturas.com/webservices63/produccion/svc01/Guatefac?WSDL'
