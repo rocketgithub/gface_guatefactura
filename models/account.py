@@ -91,7 +91,7 @@ class AccountInvoice(models.Model):
                         Productos = etree.SubElement(Detalles, "Productos")
 
                         Producto = etree.SubElement(Productos, "Producto")
-                        Producto.text = linea.product_id.id
+                        Producto.text = linea.product_id.default_code or "-"
                         Descripcion = etree.SubElement(Productos, "Descripcion")
                         Descripcion.text = linea.name
                         Medida = etree.SubElement(Productos, "Medida")
@@ -134,12 +134,12 @@ class AccountInvoice(models.Model):
 
                 session = Session()
                 # session.verify = False
-                session.http_auth = HTTPBasicAuth('usr_guatefac', 'usrguatefac')
+                # session.http_auth = HTTPBasicAuth('usr_guatefac', 'usrguatefac')
                 session.auth = HTTPBasicAuth('usr_guatefac', 'usrguatefac')
                 transport = Transport(session=session)
                 wsdl = 'https://pdte.guatefacturas.com/webservices63/produccion/svc01/Guatefac?WSDL'
                 client = zeep.Client(wsdl=wsdl, transport=transport)
-                loggin.warn(client)
+                logging.warn(client)
 
                 resultado = client.service.generaDocumento(factura.journal_id.usuario_gface, factura.journal_id.clave_gface, factura.journal_id.nit_gface, factura.journal_id.establecimiento_gface, factura.journal_id.tipo_documento_gface, factura.journal_id.id_maquina_gface, "R", xmls)
                 resultadoXML = etree.XML(resultado)
