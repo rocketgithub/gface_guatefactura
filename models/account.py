@@ -15,6 +15,30 @@ from requests.auth import HTTPBasicAuth
 import zeep
 from zeep.transports import Transport
 
+import logging.config
+logging.config.dictConfig({
+    'version': 1,
+    'formatters': {
+        'verbose': {
+            'format': '%(name)s: %(message)s'
+        }
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'zeep.transports': {
+            'level': 'DEBUG',
+            'propagate': True,
+            'handlers': ['console'],
+        },
+    }
+})
+
 class AccountInvoice(models.Model):
     _inherit = "account.invoice"
 
@@ -134,8 +158,8 @@ class AccountInvoice(models.Model):
 
                 session = Session()
                 # session.verify = False
-                # session.http_auth = HTTPBasicAuth('usr_guatefac', 'usrguatefac')
                 session.auth = HTTPBasicAuth('usr_guatefac', 'usrguatefac')
+                session.headers.update({'Authorization': 'usr_guatefac usrguatefac'})
                 transport = Transport(session=session)
                 wsdl = 'https://pdte.guatefacturas.com/webservices63/produccion/svc01/Guatefac?WSDL'
                 client = zeep.Client(wsdl=wsdl, transport=transport)
