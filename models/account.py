@@ -115,7 +115,8 @@ class AccountInvoice(models.Model):
                         Productos = etree.SubElement(Detalles, "Productos")
 
                         Producto = etree.SubElement(Productos, "Producto")
-                        Producto.text = linea.product_id.default_code or "-"
+                        # Producto.text = linea.product_id.default_code or "-"
+                        Producto.text = 'P'+str(linea.product_id.id)
                         Descripcion = etree.SubElement(Productos, "Descripcion")
                         Descripcion.text = linea.name
                         Medida = etree.SubElement(Productos, "Medida")
