@@ -102,7 +102,7 @@ class AccountInvoice(models.Model):
                 total = 0
                 Detalles = etree.SubElement(DocElectronico, "Detalles")
                 for linea in factura.invoice_line_ids:
-                    if linea.price_unit != 0:
+                    if linea.price_unit != 0 and linea.quantity != 0:
                         precio_unitario = linea.price_unit * (100-linea.discount) / 100
                         precio_unitario_base = linea.price_subtotal / linea.quantity
 
@@ -167,6 +167,7 @@ class AccountInvoice(models.Model):
                 client = zeep.Client(wsdl=wsdl, transport=transport)
 
                 resultado = client.service.generaDocumento(factura.journal_id.usuario_gface, factura.journal_id.clave_gface, factura.journal_id.nit_gface, factura.journal_id.establecimiento_gface, factura.journal_id.tipo_documento_gface, factura.journal_id.id_maquina_gface, "R", xmls)
+                resultado.replace("&", "&amp;")
                 logging.warn(resultado)
                 resultadoXML = etree.XML(resultado)
 
