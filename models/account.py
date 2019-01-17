@@ -167,7 +167,7 @@ class AccountInvoice(models.Model):
                 client = zeep.Client(wsdl=wsdl, transport=transport)
 
                 resultado = client.service.generaDocumento(factura.journal_id.usuario_gface, factura.journal_id.clave_gface, factura.journal_id.nit_gface, factura.journal_id.establecimiento_gface, factura.journal_id.tipo_documento_gface, factura.journal_id.id_maquina_gface, "R", xmls)
-                resultado.replace("&", "&amp;")
+                resultado = resultado.replace("&", "&amp;")
                 logging.warn(resultado)
                 resultadoXML = etree.XML(resultado)
 
