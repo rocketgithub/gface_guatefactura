@@ -12,6 +12,8 @@
                         <group>
                             <field name="firma_gface"/>
                             <field name="pdf_gface"/>
+                            <field name="nombre_cliente_gface"/>
+                            <field name="direccion_cliente_gface"/>
                         </group>
                     </field>
                 </data>
