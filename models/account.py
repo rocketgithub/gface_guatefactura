@@ -176,6 +176,7 @@ class AccountInvoice(models.Model):
                 if len(resultadoXML.xpath("//Firma")) > 0:
                     firma = resultadoXML.xpath("//Firma")[0].text
                     numero = resultadoXML.xpath("//Serie")[0].text+'-'+resultadoXML.xpath("//Preimpreso")[0].text
+                    factura.firma = firma
                     factura.name = numero
                     factura.nombre_cliente_gface = resultadoXML.xpath("//Nombre")[0].text
                     factura.direccion_cliente_gface = resultadoXML.xpath("//Direccion")[0].text
