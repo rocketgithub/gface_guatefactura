@@ -120,6 +120,7 @@ class AccountInvoice(models.Model):
                         # Producto.text = linea.product_id.default_code or "-"
                         Producto.text = 'P'+str(linea.product_id.id)
                         Descripcion = etree.SubElement(Productos, "Descripcion")
+                        logging.warn(linea.name)
                         Descripcion.text = linea.name
                         Medida = etree.SubElement(Productos, "Medida")
                         Medida.text = "1"
