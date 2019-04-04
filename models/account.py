@@ -51,7 +51,7 @@ class AccountInvoice(models.Model):
         detalles = []
         subtotal = 0
         for factura in self:
-            if factura.journal_id.usuario_gface and not factura.firma_gface:
+            if factura.journal_id.usuario_gface and not factura.firma_gface and factura.amount_total != 0:
 
                 DocElectronico = etree.Element("DocElectronico")
 
@@ -120,7 +120,6 @@ class AccountInvoice(models.Model):
                         # Producto.text = linea.product_id.default_code or "-"
                         Producto.text = 'P'+str(linea.product_id.id)
                         Descripcion = etree.SubElement(Productos, "Descripcion")
-                        logging.warn(linea.name)
                         Descripcion.text = linea.name
                         Medida = etree.SubElement(Productos, "Medida")
                         Medida.text = "1"
