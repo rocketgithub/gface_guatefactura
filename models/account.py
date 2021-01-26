@@ -39,8 +39,8 @@ from zeep.transports import Transport
 #     }
 # })
 
-class AccountInvoice(models.Model):
-    _inherit = "account.invoice"
+class AccountMove(models.Model):
+    _inherit = "account.move"
 
     firma_gface = fields.Char('Firma GFACE', copy=False)
     pdf_gface = fields.Binary('PDF GFACE', copy=False)
